@@ -3,14 +3,14 @@ This driver does not do any action.
 """
 from rose.common import obstacles, actions  # NOQA
 
-driver_name = "Avraham"
+driver_name = "Abraham"
 
 
 def drive(world):
     x = world.car.x
-    y = world.car.y
+    y = world.car.y - 1
     your_way = [x//3 * 3, x//3 * 3 + 1, x//3 * 3 + 2]
-    obstacle = world.get((x, y - 1))
+    obstacle = world.get((x, y))
     match obstacle:
         case obstacles.PENGUIN:
             return actions.PICKUP
@@ -22,16 +22,59 @@ def drive(world):
             return prediction(world, x, y, your_way)
         case _:
             if x - 1 in your_way:
-                return actions.LEFT
-            return actions.RIGHT
+                if world.get((x - 1, y)) not in (obstacles.BARRIER, obstacles.WATER, obstacles.CRACK, obstacles.TRASH,
+                                                 obstacles.BIKE):
+                    return actions.LEFT
+            elif x + 1 in your_way:
+                if world.get((x + 1, y)) not in (obstacles.BARRIER, obstacles.WATER, obstacles.CRACK, obstacles.TRASH,
+                                                 obstacles.BIKE):
+                    return actions.RIGHT
+            return prediction(world, x, y, your_way)
 
 
 def prediction(world, x, y, your_way):
-    if obstacles.PENGUIN in (world.get((x - 1, y - 2)), world.get((x - 1, y - 2))) and x - 1 in your_way:
-        return actions.LEFT
-    elif obstacles.PENGUIN in (world.get((x, y - 2)), world.get((x, y - 2))):
+    if x - 1 in your_way:
+        if obstacles.PENGUIN in (world.get((x - 1, y - 1)), world.get((x - 1, y - 2))):
+            if world.get((x - 1, y)) not in (obstacles.BARRIER, obstacles.WATER, obstacles.CRACK, obstacles.TRASH,
+                                             obstacles.BIKE):
+                return actions.LEFT
+    if obstacles.PENGUIN in (world.get((x, y - 1)), world.get((x, y - 2))):
         return actions.NONE
-    elif obstacles.PENGUIN in (world.get((x + 1, y - 2)), world.get((x + 1, y - 2))) and x + 1 in your_way:
-        return actions.RIGHT
-    else:
+
+    if x + 1 in your_way:
+        if obstacles.PENGUIN in (world.get((x + 1, y - 1)), world.get((x + 1, y - 2))):
+            if world.get((x + 1, y)) not in (obstacles.BARRIER, obstacles.WATER, obstacles.CRACK, obstacles.TRASH,
+                                             obstacles.BIKE):
+                return actions.RIGHT
+
+    if x - 1 in your_way:
+        if obstacles.CRACK in (world.get((x - 1, y - 1)), world.get((x - 1, y - 2))):
+            if world.get((x - 1, y)) not in (obstacles.BARRIER, obstacles.WATER, obstacles.CRACK, obstacles.TRASH,
+                                             obstacles.BIKE):
+                return actions.LEFT
+
+    if obstacles.CRACK in (world.get((x, y - 1)), world.get((x, y - 2))):
         return actions.NONE
+
+    if x + 1 in your_way:
+        if obstacles.CRACK in (world.get((x + 1, y - 1)), world.get((x + 1, y - 2))):
+            if world.get((x + 1, y)) not in (obstacles.BARRIER, obstacles.WATER, obstacles.CRACK, obstacles.TRASH,
+                                             obstacles.BIKE):
+                return actions.RIGHT
+
+    if x - 1 in your_way:
+        if obstacles.WATER in (world.get((x - 1, y - 1)), world.get((x - 1, y - 2))):
+            if world.get((x - 1, y)) not in (obstacles.BARRIER, obstacles.WATER, obstacles.CRACK, obstacles.TRASH,
+                                             obstacles.BIKE):
+                return actions.LEFT
+
+    if obstacles.WATER in (world.get((x, y - 1)), world.get((x, y - 2))):
+        return actions.NONE
+
+    if x + 1 in your_way:
+        if obstacles.WATER in (world.get((x + 1, y - 1)), world.get((x + 1, y - 2))):
+            if world.get((x + 1, y)) not in (obstacles.BARRIER, obstacles.WATER, obstacles.CRACK, obstacles.TRASH,
+                                             obstacles.BIKE):
+                return actions.RIGHT
+
+    return actions.NONE
