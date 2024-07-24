@@ -42,7 +42,7 @@ score_move_backward = -10
 score_pickup = 10
 score_jump = 5
 score_brake = 4
-
+score_bush=-30
 # Logging
 
 logger_format = (

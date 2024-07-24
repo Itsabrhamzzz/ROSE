@@ -58,11 +58,15 @@ def process(players, track):
                 config.score_move_forward,
             )
 
-        elif obstacle in (obstacles.TRASH, obstacles.BIKE, obstacles.BARRIER):
+        elif obstacle in (obstacles.TRASH, obstacles.BIKE, obstacles.BARRIER, obstacles.BUSH):
             # Move back consuming the obstacle.
             track.clear(player.x, player.y)
             player.y += 1
-            player.score += config.score_move_backward
+            if obstacle == obstacles.BUSH:
+                player.score += config.score_bush
+            else:
+                player.score += config.score_move_backward
+
             log.debug(
                 "player %s hit %s: lost %d points, moved back to %d,%d",
                 player.name,
