@@ -261,7 +261,7 @@ class Obstacles {
         this.track = null;
         this.textures = {};
 
-        const obstacleNames = ["barrier", "bike", "crack", "penguin", "trash", "water","bush"];
+        const obstacleNames = ["barrier", "bike", "crack", "penguin", "trash", "water", "bush"];
 
         obstacleNames.forEach(name => {
             loader.load(`res/obstacles/${name}.png`, (img) => {

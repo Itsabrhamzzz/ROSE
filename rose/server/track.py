@@ -7,7 +7,8 @@ class Track(object):
         self._matrix = None
         self.bush_direction_right = 1
         self.bush_direction_left = 1
-        self.previous_obstacle = obstacles.NONE
+        self.previous_obstacle_right = obstacles.NONE
+        self.previous_obstacle_left = obstacles.NONE
         self.reset()
 
     # Game state interface
@@ -47,10 +48,10 @@ class Track(object):
 
     def check_bush_on_screen(self):
         places = []
-        for row in self._matrix:
-            for obstacle in row:
+        for y, row in enumerate(self._matrix):
+            for x, obstacle in enumerate(self._matrix[y]):
                 if obstacle == obstacles.BUSH:
-                    places.append([self._matrix.index(row), row.index(obstacles.BUSH)])
+                    places.append([x, y])
         if places:
             return places
         return False
@@ -68,13 +69,20 @@ class Track(object):
         obstacle = obstacles.get_random_obstacle()
         bush_place = self.check_bush_on_screen()
         if bush_place:
-            if bush_place[0][0]//3 * 3 <= bush_place[0][0] + self.bush_direction_left <= bush_place[0][0]//3 * 3 + 2:
-                self.previous_obstacle = self._matrix[bush_place[0][0] + self.bush_direction_left][bush_place[0][1]]
-                self._matrix[bush_place[0][0] + self.bush_direction_left][bush_place[0][1]]\
-                    = self._matrix[bush_place[0][0]][bush_place[0][1]]
-                self._matrix[bush_place[0][0]][bush_place[0][1]] = self.previous_obstacle
-            else:
+            if (bush_place[0][0]//3 * 3 > bush_place[0][0] + self.bush_direction_left or
+                    bush_place[0][0] + self.bush_direction_left > bush_place[0][0]//3 * 3 + 2):
                 self.bush_direction_left *= -1
+            self._matrix[bush_place[0][1]][bush_place[0][0]] = self.previous_obstacle_left
+            self.previous_obstacle_left = self._matrix[bush_place[0][1]+1][bush_place[0][0]+self.bush_direction_left]
+            self._matrix[bush_place[0][1] + 1][bush_place[0][0] + self.bush_direction_left] = obstacles.BUSH
+            if len(bush_place) > 1:
+                if (bush_place[1][0]//3 * 3 > bush_place[1][0] + self.bush_direction_right or
+                        bush_place[1][0] + self.bush_direction_right > bush_place[1][0]//3 * 3 + 2):
+                    self.bush_direction_right *= -1
+                self._matrix[bush_place[1][1]][bush_place[1][0]] = self.previous_obstacle_right
+                self.previous_obstacle_right = self._matrix[bush_place[1][1]+1][bush_place[1][0]+self.bush_direction_right]
+                self._matrix[bush_place[1][1] + 1][bush_place[1][0] + self.bush_direction_right] = obstacles.BUSH
+
             while obstacle == obstacles.BUSH:
                 obstacle = obstacles.get_random_obstacle()
         if config.is_track_random:
