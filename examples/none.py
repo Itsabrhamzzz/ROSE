@@ -33,48 +33,31 @@ def drive(world):
 
 
 def prediction(world, x, y, your_way):
-    if x - 1 in your_way:
-        if obstacles.PENGUIN in (world.get((x - 1, y - 1)), world.get((x - 1, y - 2))):
-            if world.get((x - 1, y)) not in (obstacles.BARRIER, obstacles.WATER, obstacles.CRACK, obstacles.TRASH,
-                                             obstacles.BIKE):
-                return actions.LEFT
-    if obstacles.PENGUIN in (world.get((x, y - 1)), world.get((x, y - 2))):
-        return actions.NONE
-
-    if x + 1 in your_way:
-        if obstacles.PENGUIN in (world.get((x + 1, y - 1)), world.get((x + 1, y - 2))):
-            if world.get((x + 1, y)) not in (obstacles.BARRIER, obstacles.WATER, obstacles.CRACK, obstacles.TRASH,
-                                             obstacles.BIKE):
-                return actions.RIGHT
-
-    if x - 1 in your_way:
-        if obstacles.CRACK in (world.get((x - 1, y - 1)), world.get((x - 1, y - 2))):
-            if world.get((x - 1, y)) not in (obstacles.BARRIER, obstacles.WATER, obstacles.CRACK, obstacles.TRASH,
-                                             obstacles.BIKE):
-                return actions.LEFT
-
-    if obstacles.CRACK in (world.get((x, y - 1)), world.get((x, y - 2))):
-        return actions.NONE
-
-    if x + 1 in your_way:
-        if obstacles.CRACK in (world.get((x + 1, y - 1)), world.get((x + 1, y - 2))):
-            if world.get((x + 1, y)) not in (obstacles.BARRIER, obstacles.WATER, obstacles.CRACK, obstacles.TRASH,
-                                             obstacles.BIKE):
-                return actions.RIGHT
-
-    if x - 1 in your_way:
-        if obstacles.WATER in (world.get((x - 1, y - 1)), world.get((x - 1, y - 2))):
-            if world.get((x - 1, y)) not in (obstacles.BARRIER, obstacles.WATER, obstacles.CRACK, obstacles.TRASH,
-                                             obstacles.BIKE):
-                return actions.LEFT
-
-    if obstacles.WATER in (world.get((x, y - 1)), world.get((x, y - 2))):
-        return actions.NONE
-
-    if x + 1 in your_way:
-        if obstacles.WATER in (world.get((x + 1, y - 1)), world.get((x + 1, y - 2))):
-            if world.get((x + 1, y)) not in (obstacles.BARRIER, obstacles.WATER, obstacles.CRACK, obstacles.TRASH,
-                                             obstacles.BIKE):
-                return actions.RIGHT
-
+    good_obstacles = (obstacles.PENGUIN, obstacles.CRACK, obstacles.WATER)
+    for obstacle in good_obstacles:
+        action = check_obstacle(world, x, y, your_way, obstacle)
+        if action:
+            return action
     return actions.NONE
+
+
+def check_obstacle(world, x, y, your_way, current_obstacle):
+    bad_obstacles = (obstacles.BARRIER, obstacles.TRASH, obstacles.BIKE)
+    normal_obstacles = (obstacles.BARRIER, obstacles.WATER, obstacles.CRACK, obstacles.TRASH, obstacles.BIKE)
+    if x - 1 in your_way:
+        if world.get((x - 1, y)) not in normal_obstacles:
+            if current_obstacle == world.get((x - 1, y - 1)):
+                return actions.LEFT
+            elif current_obstacle == world.get((x - 1, y - 2)) and world.get((x - 1, y - 1)) not in bad_obstacles:
+                return actions.LEFT
+    if (current_obstacle in (world.get((x, y - 1)), world.get((x, y - 2))) and
+            world.get((x, y - 1)) not in bad_obstacles):
+        return actions.NONE
+
+    if x + 1 in your_way:
+        if world.get((x + 1, y)) not in normal_obstacles:
+            if current_obstacle == world.get((x + 1, y - 1)):
+                return actions.RIGHT
+            elif current_obstacle == world.get((x + 1, y - 2)) and world.get((x + 1, y - 1)) not in bad_obstacles:
+                return actions.RIGHT
+    return False
