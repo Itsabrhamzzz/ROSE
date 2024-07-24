@@ -23,11 +23,11 @@ def drive(world):
         case _:
             if x - 1 in your_way:
                 if world.get((x - 1, y)) not in (obstacles.BARRIER, obstacles.WATER, obstacles.CRACK, obstacles.TRASH,
-                                                 obstacles.BIKE):
+                                                 obstacles.BIKE, obstacles.BUSH):
                     return actions.LEFT
             elif x + 1 in your_way:
                 if world.get((x + 1, y)) not in (obstacles.BARRIER, obstacles.WATER, obstacles.CRACK, obstacles.TRASH,
-                                                 obstacles.BIKE):
+                                                 obstacles.BIKE, obstacles.BUSH):
                     return actions.RIGHT
             return prediction(world, x, y, your_way)
 
@@ -42,8 +42,8 @@ def prediction(world, x, y, your_way):
 
 
 def check_obstacle(world, x, y, your_way, current_obstacle):
-    bad_obstacles = (obstacles.BARRIER, obstacles.TRASH, obstacles.BIKE)
-    normal_obstacles = (obstacles.BARRIER, obstacles.WATER, obstacles.CRACK, obstacles.TRASH, obstacles.BIKE)
+    bad_obstacles = (obstacles.BARRIER, obstacles.TRASH, obstacles.BIKE, obstacles.BUSH)
+    normal_obstacles = (obstacles.BARRIER, obstacles.WATER, obstacles.CRACK, obstacles.TRASH, obstacles.BIKE, obstacles.BUSH)
     if x - 1 in your_way:
         if world.get((x - 1, y)) not in normal_obstacles:
             if current_obstacle == world.get((x - 1, y - 1)):
