@@ -48,7 +48,9 @@ def check_obstacle(world, x, y, your_way, current_obstacle):
         if world.get((x - 1, y)) not in normal_obstacles:
             if current_obstacle == world.get((x - 1, y - 1)):
                 return actions.LEFT
-            elif current_obstacle == world.get((x - 1, y - 2)) and world.get((x - 1, y - 1)) not in bad_obstacles:
+    if x - 2 in your_way:
+        if world.get((x - 1, y)) not in normal_obstacles:
+            if current_obstacle == world.get((x - 2, y - 2)) and world.get((x - 2, y - 1)) not in bad_obstacles:
                 return actions.LEFT
     if (current_obstacle in (world.get((x, y - 1)), world.get((x, y - 2))) and
             world.get((x, y - 1)) not in bad_obstacles):
@@ -58,6 +60,8 @@ def check_obstacle(world, x, y, your_way, current_obstacle):
         if world.get((x + 1, y)) not in normal_obstacles:
             if current_obstacle == world.get((x + 1, y - 1)):
                 return actions.RIGHT
-            elif current_obstacle == world.get((x + 1, y - 2)) and world.get((x + 1, y - 1)) not in bad_obstacles:
+    if x + 2 in your_way:
+        if world.get((x + 1, y)) not in normal_obstacles:
+            if current_obstacle == world.get((x + 1, y - 2)) and world.get((x + 1, y - 1)) not in bad_obstacles:
                 return actions.RIGHT
     return False

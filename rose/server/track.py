@@ -5,6 +5,9 @@ from rose.common import config, obstacles
 class Track(object):
     def __init__(self):
         self._matrix = None
+        self.bush_direction_right = 1
+        self.bush_direction_left = 1
+        self.previous_obstacle = obstacles.NONE
         self.reset()
 
     # Game state interface
@@ -42,6 +45,15 @@ class Track(object):
             [obstacles.NONE] * config.matrix_width for x in range(config.matrix_height)
         ]
 
+    def check_bush_on_screen(self):
+        places = []
+        for row in self._matrix:
+            for obstacle in row:
+                if obstacle == obstacles.BUSH:
+                    places.append([self._matrix.index(row), row.index(obstacles.BUSH)])
+        if places:
+            return places
+        return False
     # Private
 
     def _generate_row(self):
@@ -54,6 +66,17 @@ class Track(object):
         """
         row = [obstacles.NONE] * config.matrix_width
         obstacle = obstacles.get_random_obstacle()
+        bush_place = self.check_bush_on_screen()
+        if bush_place:
+            if bush_place[0][0]//3 * 3 <= bush_place[0][0] + self.bush_direction_left <= bush_place[0][0]//3 * 3 + 2:
+                self.previous_obstacle = self._matrix[bush_place[0][0] + self.bush_direction_left][bush_place[0][1]]
+                self._matrix[bush_place[0][0] + self.bush_direction_left][bush_place[0][1]]\
+                    = self._matrix[bush_place[0][0]][bush_place[0][1]]
+                self._matrix[bush_place[0][0]][bush_place[0][1]] = self.previous_obstacle
+            else:
+                self.bush_direction_left *= -1
+            while obstacle == obstacles.BUSH:
+                obstacle = obstacles.get_random_obstacle()
         if config.is_track_random:
             for lane in range(config.max_players):
                 low = lane * config.cells_per_player
