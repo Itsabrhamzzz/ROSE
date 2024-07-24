@@ -111,6 +111,11 @@ them:
                         stay in place.
                         Score: 0 for `LEFT`/`RIGHT` otherwise -10
 
+* `obstacles.BUSH`   you must return `actions.RIGHT` or `actions.LEFT` to bypass
+                        the obstacle. Any other action will cause you to
+                        stay in place.
+                        Score: 0 for `LEFT`/`RIGHT` otherwise -30
+
 NOTE : If you are driving out of your lane and have a collision with the lane
        owner, you will punished by -10 points and be moved to other free place.
 
