@@ -85,6 +85,9 @@ class Track(object):
 
             while obstacle == obstacles.BUSH:
                 obstacle = obstacles.get_random_obstacle()
+        if obstacle == obstacles.BUSH:
+            self.previous_obstacle_right = obstacles.NONE
+            self.previous_obstacle_left = obstacles.NONE
         if config.is_track_random:
             for lane in range(config.max_players):
                 low = lane * config.cells_per_player
@@ -92,6 +95,8 @@ class Track(object):
                 cell = random.choice(range(low, high))
                 row[cell] = obstacle
         else:
+            if obstacle == obstacles.BUSH:
+                self.bush_direction_right = self.bush_direction_left
             cell = random.choice(range(0, config.cells_per_player))
             for lane in range(config.max_players):
                 row[cell + lane * config.cells_per_player] = obstacle
