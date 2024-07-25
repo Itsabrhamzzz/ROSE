@@ -31,7 +31,7 @@ It moves diagonally, it bounces against the border of the two car lanes and exte
     |       |       |       |X|       |       |      |
     |       |       |       |X|       |       |      |
     |       |       |       |X|       |       | BUSH |
-    |       |       |       |X|       |       |      |
+    |       |       |       |X|       |   ↙   |      |
     |       |       |  BUSH |X| BUSH  |       |      |
     |       |   ↙   |       |X|       |   ↘   |      |
     |       |       |       |X|       |       |      |
