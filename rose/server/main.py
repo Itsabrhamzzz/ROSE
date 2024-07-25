@@ -25,6 +25,14 @@ def main():
         help="Definition of driver tracks: random or same."
         "If not specified, random will be used.",
     )
+    parser.add_argument(
+        "--extra_hard"
+        , dest="is_bush_on_map",
+        default=False,
+        choices=[True,False],
+        help="This option adds harder obstacles on the map"
+
+    )
 
     args = parser.parse_args()
     """
