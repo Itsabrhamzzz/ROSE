@@ -43,6 +43,7 @@ score_pickup = 10
 score_jump = 5
 score_brake = 4
 score_bush=-30
+score_bird=20
 # Logging
 
 logger_format = (

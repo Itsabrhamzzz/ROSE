@@ -10,7 +10,8 @@ BIKE = "bike"  # NOQA
 WATER = "water"  # NOQA
 BARRIER = "barrier"  # NOQA
 BUSH = "bush"  # NOQA
-ALL = (NONE, CRACK, TRASH, PENGUIN, BIKE, WATER, BARRIER, BUSH)
+BIRD = "bird"
+ALL = (NONE, CRACK, TRASH, PENGUIN, BIKE, WATER, BARRIER, BUSH, BIRD)
 
 
 def get_random_obstacle():
