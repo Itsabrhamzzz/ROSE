@@ -22,7 +22,7 @@ The bush appears once to the two of the car lane:
     |       |       |       |X|       |       |      |
     |       |       |       |X|       |       |      |
 
-It moves diagonally, it bounce against the separation of the two car lanes:
+It moves diagonally, it bounces against the border of the two car lanes and external borders:
 
     <------ Car#1 lane ------><------ Car#2 lane ---->
 
@@ -36,23 +36,5 @@ It moves diagonally, it bounce against the separation of the two car lanes:
     |       |   ↙   |       |X|       |   ↘   |      |
     |       |       |       |X|       |       |      |
     |       | car#1 |       |X|       | Car#2 |      |
-    |       |       |       |X|       |       |      |
-    |       |       |       |X|       |       |      |
-
-If there is any obstacle between the way of the bush it jumps over it and move:
-            
-              Before                    After
-    <------ Car#1 lane ------><------ Car#1 lane ---->
-
-    |       |       |       |X|       |       |      |
-    |       |       |       |X|       |       |      |
-    |       |       |       |X|       |       |      |
-    |       |       |       |X|       |       |      |
-    |  BUSH |       |       |X|       |       |      |
-    |       |  OBS  |       |X|       |  OBS  |      |
-    |       |       |       |X|       |       | BUSH |
-    |       |       |       |X|       |       |      |
-    |       |       |       |X|       |       |      |
-    |       | car#1 |       |X|       | Car#1 |      |
     |       |       |       |X|       |       |      |
     |       |       |       |X|       |       |      |
