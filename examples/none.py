@@ -42,12 +42,14 @@ def prediction(world, x, y, your_way):
 
 
 def check_obstacle(world, x, y, your_way, current_obstacle):
-    bad_obstacles = (obstacles.BARRIER, obstacles.TRASH, obstacles.BIKE, obstacles.BUSH)
-    normal_obstacles = (obstacles.BARRIER, obstacles.WATER, obstacles.CRACK, obstacles.TRASH, obstacles.BIKE, obstacles.BUSH)
+    bad_obstacles = (obstacles.BARRIER, obstacles.TRASH, obstacles.BIKE)
+    normal_obstacles = (obstacles.BARRIER, obstacles.WATER, obstacles.CRACK, obstacles.TRASH, obstacles.BIKE)
     if x - 1 in your_way:
         if world.get((x - 1, y)) not in normal_obstacles:
             if current_obstacle == world.get((x - 1, y - 1)):
                 return actions.LEFT
+        # if world.get((x - 1, y)) == obstacles.BUSH and bush_direction == 1:
+        #     return actions.LEFT
     if x - 2 in your_way:
         if world.get((x - 1, y)) not in normal_obstacles:
             if current_obstacle == world.get((x - 2, y - 2)) and world.get((x - 2, y - 1)) not in bad_obstacles:
@@ -60,6 +62,8 @@ def check_obstacle(world, x, y, your_way, current_obstacle):
         if world.get((x + 1, y)) not in normal_obstacles:
             if current_obstacle == world.get((x + 1, y - 1)):
                 return actions.RIGHT
+        # if world.get((x + 1, y)) == obstacles.BUSH and bush_direction == -1:
+        #     return actions.RIGHT
     if x + 2 in your_way:
         if world.get((x + 1, y)) not in normal_obstacles:
             if current_obstacle == world.get((x + 1, y - 2)) and world.get((x + 1, y - 1)) not in bad_obstacles:

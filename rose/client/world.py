@@ -1,4 +1,6 @@
 """ The world """
+from rose.common import obstacles, config
+from rose.server import track
 
 
 def generate_world(game):

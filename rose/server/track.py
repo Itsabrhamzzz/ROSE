@@ -1,5 +1,10 @@
 import random
+import time
 from rose.common import config, obstacles
+
+
+def get_rate():
+    return config.game_rate
 
 
 class Track(object):
@@ -9,6 +14,7 @@ class Track(object):
         self.bush_direction_left = 1
         self.previous_obstacle_right = obstacles.NONE
         self.previous_obstacle_left = obstacles.NONE
+        self.start = time.time()
         self.reset()
 
     # Game state interface
@@ -28,7 +34,6 @@ class Track(object):
         return items
 
     # Track interface
-
     def get(self, x, y):
         """Return the obstacle in position x, y"""
         return self._matrix[y][x]
@@ -65,6 +70,9 @@ class Track(object):
         obstacles, but in different cells if 'is_track_random' is True.
         Otherwise, the tracks will be identical.
         """
+        current_time = time.time()
+        time_spend = current_time - self.start
+        config.game_rate = int(1/time_spend)
         row = [obstacles.NONE] * config.matrix_width
         obstacle = obstacles.get_random_obstacle()
         bush_place = self.check_bush_on_screen()
@@ -100,4 +108,5 @@ class Track(object):
             cell = random.choice(range(0, config.cells_per_player))
             for lane in range(config.max_players):
                 row[cell + lane * config.cells_per_player] = obstacle
+        self.start = time.time()
         return row
